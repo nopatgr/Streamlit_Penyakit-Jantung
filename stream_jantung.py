@@ -1,7 +1,7 @@
 import streamlit as st
 import numpy as np 
 import pandas as pd 
-from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import LogisticRegression
 
 # Load data
 heart_data = pd.read_csv("heart_cleveland.csv")
@@ -12,7 +12,7 @@ X = heart_data.drop(columns='condition', axis=1)
 Y = heart_data['condition']
 
 # Train model
-model = LinearRegression()
+model = LogisticRegression()
 model.fit(X, Y)
 
 # Create Streamlit app

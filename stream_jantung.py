@@ -3,7 +3,8 @@ import streamlit as st
 import numpy as np
 
 # Load data
-model = pickle.load(open('penyakit_jantung.sav', 'rb'))
+with open('penyakit_jantung.sav', 'rb') as f:
+    model = pickle.load(f)
 
 
 # Create Streamlit app

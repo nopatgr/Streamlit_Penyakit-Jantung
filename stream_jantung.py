@@ -1,19 +1,10 @@
+import pickle
 import streamlit as st
-import numpy as np 
-import pandas as pd 
-from sklearn.linear_model import LogisticRegression
+import numpy as np
 
 # Load data
-heart_data = pd.read_csv("heart_cleveland.csv")
+model = pickle.load(open('penyakit_jantung.sav', 'rb'))
 
-
-# Define features and target variable
-X = heart_data.drop(columns='condition', axis=1)
-Y = heart_data['condition']
-
-# Train model
-model = LogisticRegression()
-model.fit(X, Y)
 
 # Create Streamlit app
 st.title("Prediksi Penyakit Jantung ")
@@ -26,11 +17,7 @@ col1, col2, col3 = st.columns(3)
 with col1:
     age = st.number_input("Usia:")
 with col2:
-    sex = st.selectbox("Jenis Kelamin:", ["Laki-laki", "Perempuan"])
-if sex == "Laki-laki":
-    sex = 1
-else:
-    sex = 0
+    sex = st.number_input("Jenis Kelamin:")
 with col3:
     cp = st.number_input("Tipe Nyeri Dada:")
 with col1:
@@ -53,17 +40,17 @@ with col3:
     ca = st.number_input("Jumlah Pembuluh Darah Utama Berwarna:")
 with col1:
     thal = st.number_input("Thalassemia:")
+    
+# code for prediction
+heart_diagnosis =''
 
 # Create prediction button
-if st.button("Prediksi"):
-    # Create input vector
-    input_data = [[age, sex, cp, trestbps, chol, fbs, restecg, thalach, exang, oldpeak, slope, ca, thal]]
+if st.button("Prediksi Penyakit Jantung"):
+    heart_prediction = model.predict([[age, sex, cp, trestbps, chol, fbs, restecg, thalach, exang, oldpeak, slope, ca, thal]])
     
-    # Make prediction
-    prediction = model.predict(input_data)[0]
-    
-    # Display prediction
-    if prediction >= 0.0:
-        st.write("Anda berpotensi mengidap penyakit jantung.")
+    if (heart_prediction[0] ==1):
+        heart_diagnosis = 'Pasien berpotensi mengidap penyakit jantung.'
     else:
-        st.write("Anda tidak berpotensi mengidap penyakit jantung.")
+        heart_diagnosis = 'Pasien tidak berpotensi mengidap penyakit jantung.'
+ 
+st.success(heart_diagnosis)

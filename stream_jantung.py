@@ -1,6 +1,8 @@
 import pickle
 import streamlit as st
 import numpy as np
+import sklearn
+
 
 # Load data
 with open('penyakit_jantung.sav', 'rb') as f:
